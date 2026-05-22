@@ -1,0 +1,28 @@
+%% Mo hinh MVC hoan chinh
+
+sequenceDiagram
+    autonumber
+    participant U as User (Browser)
+    participant C as Controller (Servlet)
+    participant M as Model (Service/DAO)
+    participant V as View (JSP)
+    participant DB as Database
+
+    U->>C: 1. Gửi yêu cầu (Request)
+    Note right of C: Phân tích yêu cầu
+
+    C->>M: 2. Gọi logic xử lý dữ liệu
+    activate M
+    M->>DB: 3. Truy vấn dữ liệu (SQL)
+    DB-->>M: 4. Trả về kết quả (ResultSet/Data)
+    Note right of M: Chuyển đổi dữ liệu thành Java Object (POJO)
+    M-->>C: 5. Trả về đối tượng dữ liệu (Model)
+    deactivate M
+
+    Note right of C: Lưu dữ liệu vào Request/Session Attribute
+    C->>V: 6. Chuyển tiếp (Forward) yêu cầu kèm dữ liệu
+
+    activate V
+    Note right of V: Đổ dữ liệu vào mã HTML (JSP/EL)
+    V-->>U: 7. Trả về trang HTML hoàn chỉnh (Response)deactivate V
+

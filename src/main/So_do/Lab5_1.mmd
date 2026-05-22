@@ -1,0 +1,16 @@
+sequenceDiagram
+    autonumber
+    actor User as User (Browser)
+    participant C as Controller (HomeServlet)
+    participant V as View (index.jsp)
+
+    User->>C: 1. Gửi yêu cầu GET (/home/index)
+
+    Note right of C: Controller tiếp nhận & xử lý
+
+    C->>V: 2. Forward (Chuyển tiếp Request/Response)
+
+    activate V
+    Note right of V: View render mã HTML
+    V-->>User: 3. Trả về trang HTML hoàn chỉnh (Response)
+deactivate V

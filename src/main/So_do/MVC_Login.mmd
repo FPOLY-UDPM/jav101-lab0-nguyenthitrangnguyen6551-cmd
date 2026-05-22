@@ -1,0 +1,40 @@
+%%giải thích chức năng đăng nhập, theo mô hình MVC
+
+sequenceDiagram
+    autonumber
+    actor U as Người dùng (Browser)
+    participant V as View (login.jsp)
+    participant C as Controller (LoginServlet)
+    participant M as Model (UserDAO/Service)
+    participant DB as Database
+
+    Note over U, V: Bước 1: Yêu cầu trang đăng nhập
+    U->>C: Truy cập URL /login (GET)
+    C->>V: Forward tới login.jsp
+    V-->>U: Hiển thị Form đăng nhập
+
+    Note over U, DB: Bước 2: Thực hiện Đăng nhập
+    U->>V: Nhập Username/Password & nhấn "Login"
+    V->>C: Gửi request POST (data: user, pass)
+
+    activate C
+    C->>M: Gọi hàm validateUser(user, pass)
+
+    activate M
+    M->>DB: Truy vấn: SELECT * FROM users WHERE...
+    DB-->>M: Trả về kết quả (Record/Null)
+
+    alt Thông tin hợp lệ
+        M-->>C: Trả về đối tượng User
+        Note right of C: Khởi tạo Session, lưu thông tin User
+        C->>V: Redirect tới trang Home (Success)
+        V-->>U: Hiển thị trang chủ (Chào bạn...)
+    else Thông tin sai
+        M-->>C: Trả về null / Error
+        deactivate M
+        Note right of C: Tạo thông báo lỗi (Attribute)
+        C->>V: Forward về lại login.jsp (Failure)
+        V-->>U: Hiển thị lỗi "Sai tài khoản hoặc mật khẩu"
+    end
+    deactivate C
+
