@@ -1,4 +1,6 @@
 package fpoly.servlet;
 
-public class UrlInfoServlet {
+import javax.servlet.http.HttpServlet;
+
+public class UrlInfoServlet extends HttpServlet {
 }
